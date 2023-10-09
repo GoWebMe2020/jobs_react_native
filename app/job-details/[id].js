@@ -1,5 +1,5 @@
 import { Text, View, SafeAreaView, ScrollView, ActivityIndicator, RefreshControl } from 'react-native'
-import { Stack, useRouter, useSearchParams } from 'expo-router'
+import { Stack, useRouter, useGlobalSearchParams } from 'expo-router'
 import { useCallback, useState } from 'react'
 
 import { Company, JobAbout, JobFooter, JobTabs, ScreenHeaderBtn, Specifics } from '../../components'
@@ -7,7 +7,7 @@ import { COLORS, icons, SIZES } from '../../constants'
 import useFetch from '../../hook/useFetch'
 
 const JobDetails = () => {
-  const params = useSearchParams()
+  const params = useGlobalSearchParams()
   const router = useRouter()
   const [refreshing, setRefreshing] = useState(false)
 
@@ -28,7 +28,7 @@ const JobDetails = () => {
             <ScreenHeaderBtn
               iconUrl={icons.left}
               dimension='60%'
-              handlePress={() => router.goBack()}
+              handlePress={() => router.back()}
             />
           ),
           headerRight: () => (
@@ -54,8 +54,16 @@ const JobDetails = () => {
             <Text>No Data</Text>
           ) : (
             <View style={{ padding: SIZES.medium, paddingBottom: 100 }}>
-              <Company />
-              <JobAbout />
+              <Company
+                companyLogo = {data[0].employer_logo}
+                jobTitle = {data[0].job_title}
+                companyName = {data[0].employer_name}
+                location = {data[0].job_country}
+              />
+
+              <JobTabs
+
+              />
             </View>
           )}
 
